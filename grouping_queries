@@ -1,0 +1,24 @@
+/* selects year, month, and date from INVOICE table and calculates 
+sum of INV_TOTAL grouped by ROLLUP */
+
+USE ch10_abc_markets;
+SELECT DATENAME (YEAR, INV_DATE) AS invoiceYear, 
+DATENAME (MONTH, INV_DATE) AS invoiceMonth,
+DATENAME (DAY, INV_DATE) AS invoiceDay, 
+SUM(INV_TOTAL) AS invoiceTotal
+FROM INVOICE
+GROUP BY ROLLUP (DATENAME (YEAR, INV_DATE), DATENAME (MONTH, INV_DATE),
+DATENAME (DAY,INV_DATE));
+
+
+/* selects INV_NUMBER, LINE_NUMBER, and the sum of LINE_PRICE
+from LINE table uses grouping sets ordered by INV_NUMBER */
+
+USE ch10_abc_markets;
+SELECT INV_NUMBER, LINE_NUMBER, SUM(LINE_PRICE) AS sumLP
+FROM LINE
+GROUP BY
+	GROUPING SETS (
+	(LINE_NUMBER, INV_NUMBER));
+
+
