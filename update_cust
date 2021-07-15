@@ -1,0 +1,60 @@
+/* insert invoice number 1009 for customer 10010 into invoice table */
+USE ch10_abc_markets;
+BEGIN TRANSACTION;
+INSERT INTO INVOICE
+VALUES (1009, '10010', '11-MAY-2012', 118.80, 'CASH', 'OPEN');
+COMMIT;
+/* displays INVOICE table with added invoice 1009 */
+SELECT * FROM INVOICE;
+
+
+/* insert invoice number 1009 into LINE table */
+USE ch10_abc_markets;
+BEGIN TRANSACTION;
+INSERT INTO LINE
+VALUES (1009, 1, '11QER/31', 1, 110.00);
+COMMIT;
+/* displays LINE table with added invoice 1009 */
+SELECT * FROM LINE;
+
+
+/* display 11QER/31 before updating table */
+USE ch10_abc_markets;
+SELECT  P_CODE, P_DESCRIPT, P_QTYOH
+FROM PRODUCT
+WHERE P_CODE = '11QER/31';
+
+
+/* updates the P_QTYOH in the PRODUCT table for item 11QER/31 */
+USE ch10_abc_markets;
+BEGIN TRANSACTION;
+UPDATE PRODUCT
+SET P_QTYOH = P_QTYOH - 1
+WHERE P_CODE = '11QER/31';
+COMMIT;
+/* display 11QER/31 after updating PRODUCT table */
+USE ch10_abc_markets;
+SELECT  P_CODE, P_DESCRIPT, P_QTYOH
+FROM PRODUCT
+WHERE P_CODE = '11QER/31';
+
+
+/* update CUSTOMER table to recent transaction for customer 10010 */
+USE ch10_abc_markets;
+BEGIN TRANSACTION;
+UPDATE CUSTOMER
+SET CUS_DATELSTPUR = '11-MAY-2012',
+CUS_BALANCE = (110.00 * .08) + (CUS_BALANCE + 110.00)
+WHERE CUS_CODE = '10010';
+COMMIT;
+/* view updated CUSTOMER table for CUS_CODE 10010 */
+SELECT CUS_CODE, CUS_LNAME, CUS_FNAME, CUS_BALANCE, CUS_DATELSTPUR
+FROM CUSTOMER
+WHERE CUS_CODE = 10010;
+
+
+/* display customer info for CUS_CODE 10010 */
+SELECT *
+FROM CUSTOMER
+WHERE CUS_CODE = 10010;
+
